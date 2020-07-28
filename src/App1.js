@@ -10,8 +10,8 @@ export default function App() {
   const [viewport, setViewport] = useState({
     latitude: 39.8283,
     longitude: -98.5795,
-    width: "100vw",
-    height: "100vh",
+    width: "50vw",
+    height: "50vh",
     zoom: 2
   });
  
