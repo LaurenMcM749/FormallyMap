@@ -2,6 +2,8 @@ import React, { useState, useEffect, Component} from "react";
 import ReactDOM from 'react-dom';
 import ReactMapGL, { Marker, Popup, GeolocateControl} from "react-map-gl";
 import * as resdata from "./data/resource_data_formatted.json";
+import location from './location.svg';
+import './App.css';
 
 //Get user input of zipcode OR Click and zoom to radius around that
 //Set viewport to that zipcode
@@ -14,7 +16,7 @@ export default function App() {
     height: "100vh",
     zoom: 2
   });
- 
+
   const [selectedRes, setSelectedRes] = useState(null);
 
   useEffect(() => {
@@ -29,25 +31,25 @@ export default function App() {
       window.removeEventListener("keydown", listener);
     };
   }, []);
- 
+
   // class ZipForm extends React.Component {
   //   constructor(props) {
   //     super(props);
   //     this.state = {value: ''};
-  
+
   //     this.handleChange = this.handleChange.bind(this);
   //     this.handleSubmit = this.handleSubmit.bind(this);
   //   }
-  
+
   //   handleChange(event) {
   //     this.setState({value: event.target.value});
   //   }
-  
+
   //   handleSubmit(event) {
   //     alert('A zipcode was submitted: ' + this.state.value);
   //     event.preventDefault();
   //   }
-  
+
   //   render() {
   //     return (
   //       <form onSubmit={this.handleSubmit}>
@@ -65,14 +67,14 @@ export default function App() {
 
 
   return (
-    
+
     <div>
-    <ReactMapGL 
+    <ReactMapGL
      {...viewport}
      mapboxApiAccessToken={"pk.eyJ1IjoibGF1cmVubWNtNzQ5IiwiYSI6ImNrY244bDRpOTA4dG0yd3Jxc2pmMjlyZzQifQ.SXZTv0RDz6Jck-ZlWxB0Mg"}
-     onViewportChange = {(viewport) => { 
+     onViewportChange = {(viewport) => {
       setViewport(viewport);
-     }  
+     }
     }
     >
      {resdata.features.map(res => (
@@ -82,6 +84,7 @@ export default function App() {
             longitude={res.geometry.coordinates[1]}
           >
             <div>
+
             <button
               className="marker-btn"
               onClick={e => {
@@ -89,7 +92,9 @@ export default function App() {
                 setSelectedRes(res);
               }}
             >
-            +
+            <svg id="location" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
             </button>
             </div>
           </Marker>
@@ -103,34 +108,40 @@ export default function App() {
               setSelectedRes(null);
             }}
           >
-            <div>
-              res
-              <h1>{selectedRes.properties.id}</h1>
-              <h2>{selectedRes.properties.name}</h2>
-              <p>{selectedRes.properties.location}</p>
-              <p>{selectedRes.properties.contact}</p>
+            <div className="map-popup">
+              <h3>{selectedRes.properties.name}</h3>
+              <div className="info-div">
+              <div className="label-row">
+                <p className="label">Address: </p>
+                <p>{selectedRes.properties.location}</p>
+              </div>
+              <div className="label-row">
+                <p className="label">Contact: </p>
+                <p>{selectedRes.properties.contact}</p>
+            </div>
+              </div>
             </div>
           </Popup>
         ) : null}
-    
-  </ReactMapGL> 
 
-  
+  </ReactMapGL>
+
+
   {/* ReactDOM.render( */}
     {/* <div>
       <ZipForm />
     </div> */}
       {/* document.getElementById('root')
     ); */}
- 
+
     </div>
- 
-      
-    
-   
-         
+
+
+
+
+
   );
 
- 
-  
+
+
 }
